@@ -1,0 +1,9 @@
+---
+- hosts: new
+  gather_facts: yes
+  tasks:
+    - name: running just for fun role 
+      import_role:
+        name: justforfun
+  
+ 

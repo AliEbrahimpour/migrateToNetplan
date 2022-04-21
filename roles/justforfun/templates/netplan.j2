@@ -1,0 +1,72 @@
+#manage by ansible template update deploy
+network:
+    version: 2
+
+    ethernets:
+      ens160:
+        dhcp4: false 
+        dhcp6: false 
+      ens192:
+        dhcp4: false
+        dhcp6: false
+
+    vlans:
+        ens192.20:
+            id: 20
+            link: ens192 
+        ens192.30:
+            id: 30
+            link: ens192
+        ens192.40:
+            id: 40
+            link: ens192
+        ens192.50:
+            id: 50
+            link: ens192
+
+    bridges:
+
+        br-mgmt:
+          interfaces: [ens160]
+          addresses: [192.168.104.1/22]
+          gateway4: 192.168.104.107
+          mtu: 1500
+          nameservers:
+            addresses: [8.8.8.8]
+          parameters:
+            stp: true
+            forward-delay: 4
+          dhcp4: no
+          dhcp6: no
+
+        br-storage:
+            addresses:
+            - 192.168.112.1/24
+            interfaces:
+            - ens192.30
+#            mtu: 9000
+
+        br-vxlan:
+            addresses:
+            - 192.168.108.1/24
+            interfaces:
+            - ens192.20
+#            mtu: 9000
+
+        br-ext:
+            addresses:
+            - 192.168.116.1/24
+            interfaces:
+            - ens192.40
+#            gateway4: 192.1.1.1
+
+        br-lbaas:
+            addresses:
+            - 172.29.232.1/22
+            interfaces:
+            - ens192.50
+
+
+        br-vlan:
+            interfaces: ens192
+#            mtu: 9000
